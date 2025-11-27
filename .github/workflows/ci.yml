@@ -1,0 +1,24 @@
+name: CI - Checkstyle, Tests & Coverage
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+        # Installe Java
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+        # Exécute Checkstyle via Maven
+      - name: Run Checkstyle
+        run: mvn -B checkstyle:check
