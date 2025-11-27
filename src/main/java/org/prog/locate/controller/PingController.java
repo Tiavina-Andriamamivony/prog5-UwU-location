@@ -1,4 +1,4 @@
-package org.prog.locate;
+package org.prog.locate.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
