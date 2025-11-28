@@ -1,0 +1,18 @@
+package org.prog.locate.entity;
+
+import jakarta.persistence.Entity;
+
+import java.time.LocalDate;
+
+@Entity
+public class Money extends Article {
+
+    private double amount;
+    private LocalDate repaymentDate;
+    private double interestRate = 0.0;
+
+    @Override
+    public Invoice rent(Renter renter) {
+        return new Invoice(this, renter, 0);
+    }
+}

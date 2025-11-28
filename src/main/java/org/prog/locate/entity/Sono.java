@@ -1,0 +1,14 @@
+package org.prog.locate.entity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Sono extends Article {
+    private boolean forEvent;
+    private double deposit;
+
+    @Override
+    public Invoice rent(Renter renter) {
+        return new Invoice(this, renter, deposit);
+    }
+}

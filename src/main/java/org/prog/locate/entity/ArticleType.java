@@ -1,0 +1,10 @@
+package org.prog.locate.entity;
+
+public enum ArticleType {
+    CAR,
+    HOUSE,
+    COMPUTER,
+    PHONE,
+    SONO,
+    MONEY
+}

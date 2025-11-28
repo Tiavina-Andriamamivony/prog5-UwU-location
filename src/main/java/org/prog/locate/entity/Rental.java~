@@ -1,0 +1,34 @@
+package org.prog.locate.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import java.time.LocalDate;
+
+@Getter
+@Setter
+@Entity
+public class Rental {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false)
+    private Article article;
+
+    @ManyToOne(optional = false)
+    private Renter renter;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private LocalDate returnedDate;
+
+    private double unitPrice;
+
+    private double totalPrice;
+
+    private boolean closed = false;
+}
