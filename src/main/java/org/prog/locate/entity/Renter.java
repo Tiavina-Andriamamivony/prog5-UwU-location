@@ -1,7 +1,18 @@
 package org.prog.locate.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Getter
 @Setter
@@ -26,10 +37,20 @@ public class Renter {
     @Column(nullable = false)
     private RenterType type;
 
-    public enum RenterType {
-        PERSON,
-        COMPANY,
-        CHURCH,
-        ASSOCIATION
+    public boolean isLoyalCustomer() {
+        return type == RenterType.PERSON;
+    }
+
+    public double getDiscountPercentage() {
+        switch (type) {
+            case COMPANY:
+                return 0.4;
+            case CHURCH:
+                return 0.8;
+            case ASSOCIATION:
+                return 0.9;
+            default:
+                return 0.0;
+        }
     }
 }

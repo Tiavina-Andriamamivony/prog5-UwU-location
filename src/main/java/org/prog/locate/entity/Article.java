@@ -1,8 +1,17 @@
 package org.prog.locate.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,6 +34,8 @@ public abstract class Article {
     private ArticleType type;
 
     private boolean available = true;
+    private LocalDate rentDay;
+    private LocalDate returnDeadline;
 
     public abstract Invoice rent(Renter renter);
 }
