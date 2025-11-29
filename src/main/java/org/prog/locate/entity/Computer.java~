@@ -1,0 +1,4 @@
+package org.prog.locate.entity;
+
+public class Computer {
+}
