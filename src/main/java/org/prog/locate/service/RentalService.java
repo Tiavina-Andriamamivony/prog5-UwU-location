@@ -31,13 +31,10 @@ public class RentalService {
         Article article = findArticleById(articleId);
         Renter renter = findRenterById(renterId);
 
-        // 🧠 Appel de ta logique métier existante
         Invoice invoice = article.rent(renter);
 
-        // Mettre à jour l’article (dates, disponible, etc.)
         articleRepository.save(article);
 
-        // Sauvegarder la facture
         invoiceRepository.save(invoice);
 
         return invoice;
