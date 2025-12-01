@@ -1,5 +1,7 @@
 package org.prog.locate.entity;
 
 public enum RentalStatus {
-    ACTIVE, COMPLETED, CANCELLED
+  ACTIVE,
+  COMPLETED,
+  CANCELLED
 }

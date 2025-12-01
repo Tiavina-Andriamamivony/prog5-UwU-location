@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Entity
 @Table(name = "renters")
 @AllArgsConstructor
@@ -25,14 +24,14 @@ import lombok.ToString;
 @ToString
 @Builder
 public class Renter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RentalType type;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private RentalType type;
 }

@@ -1,15 +1,5 @@
 package org.prog.locate.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @AllArgsConstructor
@@ -28,30 +26,30 @@ import jakarta.persistence.ManyToOne;
 @ToString
 @Builder
 public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne
-    @JoinColumn(name = "renter_id", nullable = false)
-    private Renter renter;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
-    private RentableItem item;
+  @ManyToOne
+  @JoinColumn(name = "renter_id", nullable = false)
+  private Renter renter;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
+  @ManyToOne
+  @JoinColumn(name = "item_id", nullable = false)
+  private RentableItem item;
 
-    @Column
-    private LocalDate endDate;
+  @Column(nullable = false)
+  private LocalDate startDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RentalStatus status;
+  @Column private LocalDate endDate;
 
-    @Column(nullable = false)
-    private Double totalPrice;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private RentalStatus status;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+  @Column(nullable = false)
+  private Double totalPrice;
+
+  @Column(nullable = false)
+  private LocalDateTime createdAt;
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,12 +20,12 @@ import org.prog.locate.entity.RentableItem;
 @SuperBuilder
 @Table(name = "sound_systems")
 public class SoundSystem extends RentableItem {
-    @Column(name = "power_watts")
-    private Integer powerWatts;
+  @Column(name = "power_watts")
+  private Integer powerWatts;
 
-    @Column(name = "number_of_speakers")
-    private Integer numberOfSpeakers;
+  @Column(name = "number_of_speakers")
+  private Integer numberOfSpeakers;
 
-    @Column(name = "bluetooth")
-    private Boolean bluetooth;
+  @Column(name = "bluetooth")
+  private Boolean bluetooth;
 }

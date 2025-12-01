@@ -1,6 +1,5 @@
 package org.prog.locate.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,18 +25,18 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 public class RentableItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private String description;
+  private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RentableItemType type;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private RentableItemType type;
 
-    private boolean available;
-    private Double basePrice;
+  private boolean available;
+  private Double basePrice;
 }
