@@ -106,11 +106,11 @@ cd prog5-UwU-location
 docker pull yuta2004/locate-locate:1.0
 docker compose up
 ```
-### Repatition des rôles:
-Fanhasina: Backend
-Ninah: Backend
-Mihago: Documentation
-Tiavina: BackOps
+### Rôles:
+- Fanhasina(STD23108): Backend
+- Ninah(STD23107): Backend
+- Mihago(STD23015): Documentation
+- Tiavina(STD23059): BackOps
 
 ---
 
