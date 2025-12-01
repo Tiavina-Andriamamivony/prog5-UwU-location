@@ -1,0 +1,497 @@
+openapi: 3.1.0
+info:
+  title: Rental System API
+  description: API for managing rental items, renters, and rentals
+  version: 1.0.0
+  contact:
+    name: UwU
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://api.rentalsystem.com
+    description: Production server
+tags:
+  - name: Ping
+    description: Health check endpoint
+  - name: Items
+    description: Manage rentable items (cars, houses, PCs, etc.)
+  - name: Renters
+    description: Manage renters (churches, schools, individuals, organizations)
+  - name: Rentals
+    description: Manage rental transactions
+paths:
+  /ping:
+    get:
+      tags:
+        - Ping
+      summary: Health check
+      description: Simple endpoint to check if the API is running
+      operationId: ping
+      responses:
+        '200':
+          description: API is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "pong"
+
+  /items:
+    get:
+      tags:
+        - Items
+      summary: Get all items
+      description: Retrieve a list of all rentable items
+      operationId: getAllItems
+      responses:
+        '200':
+          description: List of items retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RentableItem'
+
+  /items/available:
+    get:
+      tags:
+        - Items
+      summary: Get available items
+      description: Retrieve a list of items that are currently available for rent
+      operationId: getAvailableItems
+      responses:
+        '200':
+          description: Available items retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RentableItem'
+
+  /items/type/{type}:
+    get:
+      tags:
+        - Items
+      summary: Get items by type
+      description: Retrieve items filtered by type and availability
+      operationId: getItemsByType
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/RentableItemType'
+      responses:
+        '200':
+          description: Items retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RentableItem'
+        '400':
+          description: Invalid item type
+
+  /items/{id}/availability:
+    put:
+      tags:
+        - Items
+      summary: Update item availability
+      description: Update the availability status of a specific item
+      operationId: updateItemAvailability
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: available
+          in: query
+          required: true
+          schema:
+            type: boolean
+            example: true
+      responses:
+        '200':
+          description: Availability updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RentableItem'
+        '404':
+          description: Item not found
+
+  /renters:
+    get:
+      tags:
+        - Renters
+      summary: Get all renters
+      description: Retrieve a list of all renters
+      operationId: getAllRenters
+      responses:
+        '200':
+          description: Renters retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Renter'
+
+    post:
+      tags:
+        - Renters
+      summary: Create a new renter
+      description: Register a new renter (church, school, individual, or organization)
+      operationId: createRenter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Renter'
+      responses:
+        '201':
+          description: Renter created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Renter'
+        '400':
+          description: Invalid renter data
+
+  /renters/{id}:
+    get:
+      tags:
+        - Renters
+      summary: Get renter by ID
+      description: Retrieve details of a specific renter
+      operationId: getRenterById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Renter retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Renter'
+        '404':
+          description: Renter not found
+
+  /rentals:
+    post:
+      tags:
+        - Rentals
+      summary: Create a new rental (JSON body)
+      description: Create a new rental transaction using JSON request body
+      operationId: createRentalWithJson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - renterId
+                - itemId
+                - startDate
+                - endDate
+              properties:
+                renterId:
+                  type: integer
+                  format: int64
+                  example: 1
+                itemId:
+                  type: integer
+                  format: int64
+                  example: 5
+                startDate:
+                  type: string
+                  format: date
+                  example: "2024-12-01"
+                endDate:
+                  type: string
+                  format: date
+                  example: "2024-12-10"
+      responses:
+        '201':
+          description: Rental created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rental'
+        '400':
+          description: Invalid rental data
+        '404':
+          description: Renter or item not found
+
+  /rentals/create:
+    post:
+      tags:
+        - Rentals
+      summary: Create a new rental (query parameters)
+      description: Create a new rental transaction using query parameters
+      operationId: createRentalWithParams
+      parameters:
+        - name: renterId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: itemId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 5
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2024-12-01"
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2024-12-10"
+      responses:
+        '201':
+          description: Rental created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rental'
+        '400':
+          description: Invalid rental data
+        '404':
+          description: Renter or item not found
+
+  /rentals/active:
+    get:
+      tags:
+        - Rentals
+      summary: Get active rentals
+      description: Retrieve a list of all currently active rentals
+      operationId: getActiveRentals
+      responses:
+        '200':
+          description: Active rentals retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rental'
+
+  /rentals/{id}/cancel:
+    put:
+      tags:
+        - Rentals
+      summary: Cancel a rental
+      description: Cancel an active rental by its ID
+      operationId: cancelRental
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Rental cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rental'
+        '400':
+          description: Cannot cancel non-active rental
+        '404':
+          description: Rental not found
+
+  /rentals/renter/{renterId}:
+    get:
+      tags:
+        - Rentals
+      summary: Get rentals by renter
+      description: Retrieve all rentals for a specific renter
+      operationId: getRentalsByRenter
+      parameters:
+        - name: renterId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Rentals retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rental'
+        '404':
+          description: Renter not found
+
+components:
+  schemas:
+    RentableItemType:
+      type: string
+      enum:
+        - CAR
+        - HOME
+        - PC
+        - MOBILE_PHONE
+        - SOUND_SYSTEM
+        - MONEY
+      example: CAR
+
+    RentalType:
+      type: string
+      enum:
+        - CHURCH
+        - SCHOOL
+        - INDIVIDUAL
+        - ORGANIZATION
+      example: INDIVIDUAL
+
+    RentalStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - COMPLETED
+        - CANCELLED
+      example: ACTIVE
+
+    RentableItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Toyota Camry 2022"
+        description:
+          type: string
+          example: "Mid-size sedan, automatic transmission"
+        type:
+          $ref: '#/components/schemas/RentableItemType'
+        available:
+          type: boolean
+          example: true
+        basePrice:
+          type: number
+          format: double
+          example: 50.0
+      required:
+        - name
+        - type
+        - available
+
+    Renter:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: "Saint Mary Church"
+        type:
+          $ref: '#/components/schemas/RentalType'
+      required:
+        - name
+        - type
+
+    Rental:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        renter:
+          $ref: '#/components/schemas/Renter'
+        item:
+          $ref: '#/components/schemas/RentableItem'
+        startDate:
+          type: string
+          format: date
+          example: "2024-12-01"
+        endDate:
+          type: string
+          format: date
+          example: "2024-12-10"
+        status:
+          $ref: '#/components/schemas/RentalStatus'
+        totalPrice:
+          type: number
+          format: double
+          example: 450.0
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-11-28T10:30:00Z"
+      required:
+        - renter
+        - item
+        - startDate
+        - status
+        - totalPrice
+        - createdAt
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Not Found"
+              message:
+                type: string
+                example: "Resource not found"
+
+    BadRequest:
+      description: Invalid request data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Business Error"
+              message:
+                type: string
+                example: "Item is not available for rental"
+
