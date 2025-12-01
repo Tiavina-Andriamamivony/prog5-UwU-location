@@ -1,0 +1,40 @@
+version: '3.8'
+
+volumes:
+  db_data:
+networks:
+  locate_network:
+    name: locate_network
+services:
+  postgres:
+    image: postgres:17
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      POSTGRES_DB: ${DB_NAME:-locate}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - locate_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myuser -d locate" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 7s
+  locate:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME:-locate}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-changeme}
+    networks:
+      - locate_network
