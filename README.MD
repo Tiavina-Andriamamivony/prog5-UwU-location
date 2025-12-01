@@ -34,6 +34,7 @@ controller/   # contient tous les controllers
 entity/       # les entités JPA
 repository/   # interfaces JPARepository
 service/      # services métier
+manager/      # Orchestration 
 ```
 
 ---
